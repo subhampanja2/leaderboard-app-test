@@ -1,0 +1,12 @@
+1. Add player and winner model ✅
+2. Add player and winner migration ✅
+3. Add player controller ✅
+4. Add api.php and add api route ✅
+5. Add player factory and seeder ✅
+6. Add reset-scores command ✅
+7. Add winner job ✅
+8. Add API test cases ✅
+9. Add Swagger
+10. Add documentation ✅
+11. Add DockerFile
+12. Add github
