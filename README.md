@@ -1,6 +1,6 @@
 # **Laravel Leaderboard Application**
 
-This is a Laravel-based API application designed to manage a leaderboard where users can gain or lose points, be added or removed, and view details such as name, age, points, and address. The application also includes features such as QR code generation for user addresses, scheduled tasks to identify high scorers, and comprehensive test coverage.
+This is a Laravel-based API application designed to manage a leaderboard where players can gain or lose points, be added or removed, and view details such as name, age, points, and address. The application also includes features such as QR code generation for player addresses, scheduled tasks to identify high scorers, and comprehensive test coverage.
 
 ## **Table of Contents**
 
@@ -17,12 +17,12 @@ This is a Laravel-based API application designed to manage a leaderboard where u
 
 ## **Features**
 
--   **Leaderboard Management**: Add, update, and delete users, with real-time score adjustments.
--   **User Details**: Click on a user’s name to view their details, including name, age, points, and address.
--   **QR Code Generation**: Automatically generates and stores a QR code for the user’s address upon creation.
--   **Score Reset**: Command to reset all users' scores to zero.
+-   **Leaderboard Management**: Add, update, and delete players, with real-time score adjustments.
+-   **Player Details**: Click on a player’s name to view their details, including name, age, points, and address.
+-   **QR Code Generation**: Automatically generates and stores a QR code for the player’s address upon creation.
+-   **Score Reset**: Command to reset all players' scores to zero.
 -   **Highest Scorer Tracking**: Scheduled job that identifies and stores the highest scorer at regular intervals.
--   **API Responses Grouped by Score**: Returns user information grouped by score with average age calculation.
+-   **API Responses Grouped by Score**: Returns player information grouped by score with average age calculation.
 
 ## **Installation**
 
@@ -41,7 +41,7 @@ Follow these steps to set up the application on your local machine.
 1.  **Clone the Repository**:
 
     ```
-    git clone https://github.com/your-username/leaderboard-app.git
+    git clone https://github.com/subhampanja2/leaderboard-app-test
     cd leaderboard-app
     ```
 
@@ -91,11 +91,11 @@ The application will be accessible at `http://localhost:8000`.
 All endpoints are prefixed with `/api`.
 
 **Endpoints**
-Create User
+Create Player
 
 -   Method: `POST`
--   URL: `/api/users`
--   Description: Creates a new user and generates a QR code for their address.
+-   URL: `/api/players`
+-   Description: Creates a new player and generates a QR code for their address.
 -   Request Body: `JSON`
     ```
     {
@@ -104,32 +104,90 @@ Create User
           "address": "123 Main St, City"
     }
     ```
--   Response: Returns the created user object.
+-   Response: Returns the created player object.
 
-**Update User Points**
+Get All player
+
+-   Method: `GET`
+-   URL: `/api/players`
+-   Description: Get all player with pagination.
+-   Request Body: `JSON`
+    ```
+    {
+    data:[ {
+          "name": "John Doe",
+          "age": 30,
+          "address": "123 Main St, City"
+    }],
+    meta: {
+        'first_page_url' => '...',
+        'from' => '...',
+        'last_page' => '...',
+        'last_page_url' => '...',
+        'links' => '...',
+        'next_page_url' => '...',
+        'path' => '...',
+        'per_page' => '...',
+        'prev_page_url' => '...',
+        'to' => '...',
+        'total' => '...'
+    }
+    }
+    ```
+-   Response: Returns the all player data with pagination.
+
+Get player by id
+
+-   Method: `GET`
+-   URL: `/api/players/{id}`
+-   Description: Get player by id.
+-   Request Body: `JSON`
+    ```
+    {
+          "name": "John Doe",
+          "age": 30,
+          "address": "123 Main St, City"
+    }
+    ```
+-   Response: Returns the player that match with id
+
+**Increment Player Points**
 
 -   Method: `PATCH`
--   URL: `/api/users/{id}/points`
--   Description: Increment or decrement user points.
+-   URL: `/api/players/{id}/increment`
+-   Description: Increment player points.
 -   Request Body: `JSON`
     ```
     {
       "points": 5
     }
     ```
--   Response: Returns the updated user object.
+-   Response: Returns the updated player object.
 
-**Delete User**
+**Decrement Player Points**
+
+-   Method: `PATCH`
+-   URL: `/api/players/{id}/decrement`
+-   Description: decrement player points.
+-   Request Body: `JSON`
+    ```
+    {
+      "points": 5
+    }
+    ```
+-   Response: Returns the updated player object.
+
+**Delete Player**
 
 -   Method: `DELETE`
--   URL: `/api/users/{id}`
--   Description: Deletes a user by `ID`.
+-   URL: `/api/players/{id}`
+-   Description: Deletes a player by `ID`.
 
-**Get Users Grouped by Score**
+**Get Players Grouped by Score**
 
 -   Method: `GET`
--   URL: `/api/users/grouped-by-score`
--   Description: Returns users grouped by their scores with the average age.
+-   URL: `/api/players/group_by/points`
+-   Description: Returns players grouped by their scores with the average age.
 -   Response: `JSON`
     ```
     {
@@ -145,13 +203,13 @@ Create User
 **Reset Scores Command**
 
 -   Command: `php artisan leaderboard:reset-scores`
--   Description: Resets all user scores to zero.
+-   Description: Resets all player scores to zero.
 
 **Scheduled Job to Identify Highest Scorer**
 
 -   Job: `CheckHighestScorer`
 -   Frequency: Every 5 minutes
--   Description: Identifies the highest scorer and records it in the winners table. No record is created if there is a tie.
+-   Description: Identifies the highest scorer and records it in the winners table. No record will be created if there is a tie.
 
 **Testing**
 
@@ -160,18 +218,19 @@ Create User
     php artisan test
     ```
 
-Test cases are located in the `tests/Feature/` directory, covering key functionalities like user creation, score updates, and grouped responses.
+Test cases are located in the `tests/Feature/` directory, covering key functionalities like player creation, score updates, and grouped responses.
 
 Project Structure
 
--   `app/Models/`: Contains the models (User, Winner).
+-   `app/Models/`: Contains the models (Player, Winner).
 -   `app/Http/Controllers/`: Contains the controllers for managing the leaderboard.
 -   `app/Console/Commands/`: Custom Artisan commands.
 -   `app/Jobs/`: Background jobs for scheduled tasks.
 -   `routes/api.php`: Defines the API routes.
 -   `database/migrations/`: Database schema migrations.
+-   `database/factories/`: Database seeders config for initial data.
 -   `database/seeders/`: Database seeders for initial data.
--   `tests/Feature/`: Test cases for various features.
+-   `tests/Feature/`: Test cases for various api features.
 
 ## **Contributing**
 
