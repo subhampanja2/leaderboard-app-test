@@ -153,7 +153,7 @@ Get player by id
 
 **Increment Player Points**
 
--   Method: `PATCH`
+-   Method: `PUT`
 -   URL: `/api/players/{id}/increment`
 -   Description: Increment player points.
 -   Request Body: `JSON`
@@ -166,7 +166,7 @@ Get player by id
 
 **Decrement Player Points**
 
--   Method: `PATCH`
+-   Method: `PUT`
 -   URL: `/api/players/{id}/decrement`
 -   Description: decrement player points.
 -   Request Body: `JSON`
